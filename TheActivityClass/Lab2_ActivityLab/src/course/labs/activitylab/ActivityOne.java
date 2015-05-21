@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class ActivityOne extends Activity {
@@ -27,23 +28,36 @@ public class ActivityOne extends Activity {
 	// mCreate, mRestart, mStart and mResume
 	// to count calls to onCreate(), onRestart(), onStart() and
 	// onResume(). These variables should not be defined as static.
-
+    int mCreate=0;
+    int mRestart=0;
+    int mStart=0;
+    int mResume=0;
 	// You will need to increment these variables' values when their
 	// corresponding lifecycle methods get called.
 
 	// TODO: Create variables for each of the TextViews
 	// named mTvCreate, mTvRestart, mTvStart, mTvResume.
 	// for displaying the current count of each counter variable
-
+    TextView mTvCreate;//=(TextView) findViewById(R.id.create);
+    TextView mTvStart;
+    TextView mTvRestart;
+    TextView mTvResume;
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_one);
 
 		// TODO: Assign the appropriate TextViews to the TextView variables
+		mTvCreate=(TextView) findViewById(R.id.create);
+		mTvStart=(TextView) findViewById(R.id.start);
+		mTvResume=(TextView) findViewById(R.id.resume);
+		mTvRestart=(TextView) findViewById(R.id.restart);		
+		
 		// Hint: Access the TextView by calling Activity's findViewById()
 		// textView1 = (TextView) findViewById(R.id.textView1);
-
+		
+		
 		Button launchActivityTwoButton = (Button) findViewById(R.id.bLaunchActivityTwo);
 		launchActivityTwoButton.setOnClickListener(new OnClickListener() {
 
@@ -56,9 +70,9 @@ public class ActivityOne extends Activity {
 				// Create an intent stating which Activity you would like to
 				// start
 				Intent intent = null;
-
+				intent=new Intent(ActivityOne.this, ActivityTwo.class);
 				// Launch the Activity using the intent
-
+				startActivity(intent);
 			}
 		});
 
@@ -77,6 +91,9 @@ public class ActivityOne extends Activity {
 		// TODO:
 		// Update the appropriate count variable
 		// Update the user interface via the displayCounts() method
+		mCreate+=1;
+		displayCounts();
+
 
 	}
 
@@ -92,7 +109,8 @@ public class ActivityOne extends Activity {
 		// TODO:
 		// Update the appropriate count variable
 		// Update the user interface
-
+		mStart+=1;
+		displayCounts();		
 	}
 
 	@Override
@@ -105,6 +123,9 @@ public class ActivityOne extends Activity {
 		// TODO:
 		// Update the appropriate count variable
 		// Update the user interface
+		mResume+=1;
+		displayCounts();		
+		
 
 	}
 
@@ -134,7 +155,11 @@ public class ActivityOne extends Activity {
 		// TODO:
 		// Update the appropriate count variable
 		// Update the user interface
+		mRestart+=1;
+		displayCounts();		
 
+		
+		
 	}
 
 	@Override
@@ -152,19 +177,13 @@ public class ActivityOne extends Activity {
 		// 4 lines of code, one for every count variable
 
 	}
-
 	// Updates the displayed counters
 	// This method expects that the counters and TextView variables use the
-	// names
-	// specified above
+	// names specified above
 	public void displayCounts() {
-
-		// TODO - uncomment these lines
-	/*
 		mTvCreate.setText("onCreate() calls: " + mCreate);
 		mTvStart.setText("onStart() calls: " + mStart);
 		mTvResume.setText("onResume() calls: " + mResume);
 		mTvRestart.setText("onRestart() calls: " + mRestart);
-	*/
 	}
 }
