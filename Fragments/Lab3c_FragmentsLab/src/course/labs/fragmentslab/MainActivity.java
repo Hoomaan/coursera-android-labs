@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.FrameLayout;
 
 public class MainActivity extends Activity implements
 		FriendsFragment.SelectionListener {
@@ -24,18 +25,16 @@ public class MainActivity extends Activity implements
 		if (!isInTwoPaneMode()) {
 			
 			mFriendsFragment = new FriendsFragment();
-
 			//TODO 1 - add the FriendsFragment to the fragment_container
-			
-			
-			
+			//mFriendsFragment=(FriendsFragment) getFragmentManager().findFragmentById(R.id.friends_frag);
+			 //FrameLayout mFrameLayout=(FrameLayout) findViewById(R.id.fragment_container);
+			 getFragmentManager().beginTransaction().add(R.id.fragment_container, mFriendsFragment).commit();			 
+		
 
 		} else {
 
 			// Otherwise, save a reference to the FeedFragment for later use
-
-			mFeedFragment = (FeedFragment) getFragmentManager()
-					.findFragmentById(R.id.feed_frag);
+			mFeedFragment = (FeedFragment) getFragmentManager().findFragmentById(R.id.feed_frag);
 		}
 
 	}
@@ -65,10 +64,11 @@ public class MainActivity extends Activity implements
 		if (!isInTwoPaneMode()) {
 
 			//TODO 2 - replace the fragment_container with the FeedFragment
-			
-
-			
-
+			//getFragmentManager().beginTransaction().detach(mFriendsFragment);
+			FragmentTransaction transaction=getFragmentManager().beginTransaction();
+			transaction.replace(R.id.fragment_container,mFeedFragment);
+			transaction.addToBackStack(null);
+			transaction.commit();
 			// execute transaction now
 			getFragmentManager().executePendingTransactions();
 
