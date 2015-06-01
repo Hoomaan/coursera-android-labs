@@ -21,6 +21,7 @@ public class ActivityLoaderActivity extends Activity {
     
 	// TextView that displays user-entered text from ExplicitlyLoadedActivity runs
 	private TextView mUserTextView;
+	static final int ACT_INT_CODE_REQUEST=1;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +66,12 @@ public class ActivityLoaderActivity extends Activity {
         
 		Log.i(TAG,"Entered startExplicitActivation()");
 		
-		// TODO - Create a new intent to launch the ExplicitlyLoadedActivity class
-		Intent explicitIntent = null;
+		//  Create a new intent to launch the ExplicitlyLoadedActivity class
+		Intent explicitIntent = new Intent(ActivityLoaderActivity.this, ExplicitlyLoadedActivity.class);
+		// Launch the Activity using the intent
 		
-		// TODO - Start an Activity using that intent and the request code defined above
+		//  Start an Activity using that intent and the request code defined above
+		startActivityForResult(explicitIntent,ACT_INT_CODE_REQUEST);
 		
         
         
@@ -83,20 +86,18 @@ public class ActivityLoaderActivity extends Activity {
 		// TODO - Create a base intent for viewing a URL
 		// (HINT:  second parameter uses Uri.parse())
 		
-        Intent baseIntent = null;
+        Uri webpage = Uri.parse("http://www.android.com");
+        Intent baseIntent = new Intent(Intent.ACTION_VIEW, webpage);
 		
-		// TODO - Create a chooser intent, for choosing which Activity
+		//  Create a chooser intent, for choosing which Activity
 		// will carry out the baseIntent
-		// (HINT: Use the Intent class' createChooser() method)
-		Intent chooserIntent = null;
-        
-        
+		Intent chooserIntent = Intent.createChooser(baseIntent, "");
+		// Verify the intent will resolve to at least one activity
+		if (chooserIntent.resolveActivity(getPackageManager()) != null) {
+			//  Start the chooser Activity, using the chooser intent
+		    startActivity(chooserIntent);
+		}
 		Log.i(TAG,"Chooser Intent Action:" + chooserIntent.getAction());
-        
-        
-		// TODO - Start the chooser Activity, using the chooser intent
-
-        
 	}
     
 	@Override
@@ -104,9 +105,16 @@ public class ActivityLoaderActivity extends Activity {
         
 		Log.i(TAG, "Entered onActivityResult()");
 		
-		// TODO - Process the result only if this method received both a
+		//  Process the result only if this method received both a
 		// RESULT_OK result code and a recognized request code
 		// If so, update the Textview showing the user-entered text.
+		   if (requestCode == ACT_INT_CODE_REQUEST) {
+		        // Make sure the request was successful
+		        if (resultCode == RESULT_OK) {
+		        	String s=data.getStringExtra("userInput");
+		        	mUserTextView.setText(s);
+		        }
+		    }		
 
 	
     
