@@ -3,8 +3,10 @@ package course.labs.todomanager;
 import java.util.ArrayList;
 import java.util.List;
 
+import course.labs.todomanager.ToDoItem.Status;
 import android.content.Context;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -84,52 +86,67 @@ public class ToDoListAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 
 		// TODO - Get the current ToDoItem
-		final ToDoItem toDoItem = null;
-
+		//final ToDoItem toDoItem = null;
+		final ToDoItem toDoItem=(ToDoItem) getItem(position);
 
 		// TODO - Inflate the View for this ToDoItem
 		// from todo_item.xml
 		RelativeLayout itemLayout = null;
+		itemLayout =(RelativeLayout) LayoutInflater.from(mContext).inflate(R.layout.todo_item, null, false);
 
+		
 		// Fill in specific ToDoItem data
 		// Remember that the data that goes in this View
 		// corresponds to the user interface elements defined
 		// in the layout file
 
-		// TODO - Display Title in TextView
-		final TextView titleView = null;
+		//  Display Title in TextView
+		final TextView titleView = (TextView) itemLayout.findViewById(R.id.StatusLabel);
+		titleView.setText(toDoItem.getTitle());
 
+		//  Set up Status CheckBox
+		final CheckBox statusView = (CheckBox) itemLayout.findViewById(R.id.statusCheckBox);
+		if (toDoItem.getStatus() == ToDoItem.Status.DONE) {
+			statusView.setChecked(false);
+		}else		{
+			statusView.setChecked(true);
+		}
+		
 
-		// TODO - Set up Status CheckBox
-		final CheckBox statusView = null;
-
-
-		// TODO - Must also set up an OnCheckedChangeListener,
+		// Must also set up an OnCheckedChangeListener,
 		// which is called when the user toggles the status checkbox
 
 		statusView.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 					@Override
 					public void onCheckedChanged(CompoundButton buttonView,
 							boolean isChecked) {
-
-
-
-                        
-                        
-                        
+						statusView.setChecked(isChecked);
+						if (isChecked){
+							toDoItem.setStatus(ToDoItem.Status.DONE);
+							//mItems.set(position, toDoItem);
+						}else
+						{
+							toDoItem.setStatus(ToDoItem.Status.NOTDONE);
+						}
 					}
 				});
 
-		// TODO - Display Priority in a TextView
-		final TextView priorityView = null;
-
-
-
-		// TODO - Display Time and Date.
+		//  Display Priority in a TextView
+		final TextView priorityView =(TextView) itemLayout.findViewById(R.id.priorityView);
+		if (toDoItem.getPriority() == ToDoItem.Priority.LOW) {
+			priorityView.setText("Low");
+		}
+		else if (toDoItem.getPriority() == ToDoItem.Priority.MED){
+			priorityView.setText("Medium");
+		}else{
+			priorityView.setText("High");
+		}
+			
+		// Display Time and Date.
 		// Hint - use ToDoItem.FORMAT.format(toDoItem.getDate()) to get date and
 		// time String
-		final TextView dateView = null;
-
+		final TextView dateView = (TextView) itemLayout.findViewById(R.id.dateView);;
+		dateView.setText(ToDoItem.FORMAT.format(toDoItem.getDate()));
 		// Return the View you just created
 		return itemLayout;
 
